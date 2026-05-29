@@ -1,0 +1,7 @@
+model_name: bert-base-uncased
+dataset_name: imdb
+batch_size: 8
+learning_rate: 2e-5
+epochs: 3
+max_length: 256
+output_dir: outputs/models/bert
