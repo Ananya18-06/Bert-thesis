@@ -6,6 +6,7 @@ model, tokenizer = load_model()
 model.to(device)
 model.eval()
 
+#---------------------- TEST MODEL PRIOR TRAINING: ------------------
 def predict(text):
     inputs = tokenizer(
         text,

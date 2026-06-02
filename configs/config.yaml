@@ -1,7 +1,22 @@
-model_name: bert-base-uncased
-dataset_name: imdb
-batch_size: 8
-learning_rate: 2e-5
+model_name: google-bert/bert-base-uncased
+dataset_name: stanfordnlp/sst2
+
+lr: 0.00005 #5e-5
 epochs: 3
-max_length: 256
+batch_size: 8
+
+max_seq_length: 128
+
+warmup_ratio: 0.1
+gradient_accumulation: 1
+
+optimizer: adamw_torch
+scheduler: linear
+
+weight_decay: 0.0
+max_grad_norm: 1.0
+
+seed: 42
+eval_size: 8
+
 output_dir: outputs/models/bert

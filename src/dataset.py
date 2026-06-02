@@ -1,11 +1,17 @@
-from model import tokenizer
+from model import load_model
+import yaml
 from datasets import load_dataset
 
 # -------------- CONSTANTS: dataset -----------------
-dataset_name = "stanfordnlp/sst2"
+with open("configs/config.yaml", "r") as f:
+    config = yaml.safe_load(f)
+
+dataset_name = config["dataset_name"]
+print("CONFIG DATASET =", dataset_name)
 
 # ---------------- FUNCTIONS ----------------
 
+model, tokenizer = load_model()
 
 def tokenize(batch):
     return tokenizer(
@@ -16,7 +22,6 @@ def tokenize(batch):
     )
     
 def load_and_prepare_datasets():
-    global formatted_dataset, test_dataset, evaluation_dataset
 
     dataset = load_dataset(dataset_name)
     train_dataset = dataset["train"]

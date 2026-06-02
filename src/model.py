@@ -1,20 +1,23 @@
 
 from huggingface_hub import login
+import yaml
 import pandas
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 # -------------- CONSTANTS: model -----------------
+with open("configs/config.yaml", "r") as f:
+    config = yaml.safe_load(f)
 
 # Model choice:
-model_name = "google-bert/bert-base-uncased"
+model_name = config["model_name"]
 
-output_dir = "./results"
+output_dir = config["output_dir"]
 
 device = torch.device("cpu")
 
-# ---------------- GLOBAL VARIABLES ----------------
 model = None
 tokenizer = None
+
 
 # ---------------- FUNCTIONS ----------------
 
@@ -34,6 +37,7 @@ def load_model():
 
     print("Model and tokenizer loaded successfully.")
     text = "Replace me by any text you'd like."
+    
     encoded = tokenizer(text, return_tensors='pt')
     encoded = {k: v.to(device) for k, v in encoded.items()}
     output = model(**encoded)
