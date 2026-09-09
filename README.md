@@ -1,4 +1,10 @@
-Steps completed:
-1) Loaded Model and tokenizer 
-2) Loaded dataset 
-3) Checked prediction of few samples from dataset (not yet finetuned)
+Run the Python files in the following order:
+0) Install requirements.txt
+1) model_dataset.py
+2) train.py
+3) explain.py
+4) faithfulness.py
+5) distribution_shift.py
+6) evaluation.py
+7) bootstrap.py
+8) plot.py
