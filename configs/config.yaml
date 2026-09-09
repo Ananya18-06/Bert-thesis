@@ -1,5 +1,5 @@
 model_name: google-bert/bert-base-uncased
-dataset_name: stanfordnlp/sst2
+dataset_name: stanfordnlp/sst2 #stanfordnlp/imdb
 
 lr: 0.00005 #5e-5
 epochs: 3

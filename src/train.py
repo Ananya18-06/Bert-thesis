@@ -1,3 +1,4 @@
+import json
 import yaml
 import numpy as np 
 from transformers import (
@@ -8,12 +9,12 @@ from transformers import (
 )
 
 from model import load_model 
-from dataset import load_and_prepare_datasets
+from model_dataset import load_and_prepare_datasets
 
 def compute_metrics(eval_pred):
     logits, labels = eval_pred
     predictions = np.argmax(logits, axis = -1)
-    accuracy =(predictions ==labels).mean()
+    accuracy = (predictions ==labels).mean()
     return{
         "accuracy": accuracy
     }
@@ -43,9 +44,13 @@ def main():
             eval_strategy="epoch",
             save_strategy="epoch",
             load_best_model_at_end=True,
+            metric_for_best_model="accuracy",
+            greater_is_better=True,
             logging_dir="outputs/logs",
             seed=config["seed"],
-            fp16=False, 
+            fp16=True,
+            dataloader_num_workers = 4,
+            dataloader_pin_memory= True, 
             push_to_hub=False
             
         )
@@ -66,9 +71,23 @@ def main():
         )
         
         trainer.train()
+        eval_metrics = trainer.evaluate(eval_dataset=valid_dataset)
+        print("Development set metrics (best checkpoint):")
+        print(eval_metrics)
+
+        dev_accuracy = eval_metrics["eval_accuracy"]
+        print(f"Final dev accuracy: {dev_accuracy:.4f}")
+
+        # --- persist metrics to disk so you can cite the exact number later ---
+        with open(f"{config['output_dir']}/dev_metrics.json", "w") as f:
+           json.dump(eval_metrics, f, indent=2)
         trainer.save_model(config["output_dir"])
         tokenizer.save_pretrained(config["output_dir"])
+        print(trainer.state.best_model_checkpoint)
+        print(trainer.state.best_metric)
+        
         
 if __name__ == "__main__":
     main()
+  
 
