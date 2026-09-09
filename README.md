@@ -1,4 +1,4 @@
-Run the Python files in the following order:
+Run the Python files (in src folder) in the following order:
 
 0) Install requirements.txt
 1) model_dataset.py
